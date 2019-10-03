@@ -13,6 +13,7 @@ def main():
     try:
         with connection.cursor() as cursor:
             sql = "CREATE TABLE `users`"
+            cursor.execute(sql)
         connection.commit()
     finally:
         connection.close()
