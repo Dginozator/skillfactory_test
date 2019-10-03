@@ -12,7 +12,7 @@ connection = pymysql.connect(
 def main():
     try:
         with connection.cursor() as cursor:
-            sql = "CREATE TABLE `users`"
+            sql = "CREATE TABLE `users` (`id`)"
             cursor.execute(sql)
         connection.commit()
     finally:
