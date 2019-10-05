@@ -14,8 +14,13 @@ connection = pymysql.connect(
 
 def main():
     list = loadStructCourse()
-    createTable()
-    fillTable(list)
+    try:
+        createTable()
+        fillTable(list)
+    except:
+        pass
+    finally:
+        connection.close()
 
 
 def loadStructCourse():
@@ -133,10 +138,6 @@ def createTable():
             );"
             cursor.execute(sql)
         connection.commit()
-    except:
-        pass
-    finally:
-        connection.close()
 
 def fillTable(list):
     flagFirst = 1
@@ -152,10 +153,7 @@ def fillTable(list):
                 sql += '(' + block['display_name'] + ',' + block['block_id'] + ')'
             cursor.execute(sql)
         connection.commit()
-    except:
-        pass
-    finally:
-        connection.close()
+        
 
 # createTable()
 # loadStructCourse()
