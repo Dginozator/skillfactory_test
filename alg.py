@@ -2,16 +2,16 @@ import requests
 import json
 import re
 
-# import pymysql.cursors
+import pymysql.cursors
 
-# Connect to the database
-# connection = pymysql.connect(
-#     host='localhost',
-#     user='lucy',
-#     password='',
-#     db='test_database',
-#     charset='utf8mb4',
-#     cursorclass=pymysql.cursors.DictCursor)
+Connect to the database
+connection = pymysql.connect(
+    host='localhost',
+    user='lucy',
+    password='12345',
+    db='test_database',
+    charset='utf8mb4',
+    cursorclass=pymysql.cursors.DictCursor)
 
 def loadStructCourse():
     url = 'http://analytics.skillfactory.ru:5000/api/v1.0/get_structure_course/'
@@ -116,9 +116,18 @@ def parseIndex (index):
 def createTable():
     try:
         with connection.cursor() as cursor:
-            sql = "CREATE TABLE `users` (`contact_id` INT(11)PRIMARY KEY)"
+            sql = "DROP TABLE IF EXISTS `Modules`;"
+            sql += "CREATE TABLE `Modules` ( \
+                id INT NOT NULL AUTO_INCREMENT,\
+                name TEXT,\
+                block_id TEXT,\
+                update_time TIMESTAMP,\
+                PRIMARY KEY (id)\
+            );"
             cursor.execute(sql)
         connection.commit()
+    except:
+        pass
     finally:
         connection.close()
 
@@ -142,5 +151,5 @@ def example():
     finally:
         connection.close()
 
-# createTable()
-loadStructCourse()
+createTable()
+# loadStructCourse()
