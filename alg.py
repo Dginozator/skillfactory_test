@@ -126,35 +126,32 @@ def parseIndex (index):
     return (result)
 
 def createTable():
-    try:
-        with connection.cursor() as cursor:
-            sql = "DROP TABLE IF EXISTS `Modules`;"
-            sql += "CREATE TABLE `Modules` ( \
-                id INT NOT NULL AUTO_INCREMENT,\
-                name TEXT,\
-                block_id TEXT,\
-                update_time TIMESTAMP,\
-                PRIMARY KEY (id)\
-            );"
-            cursor.execute(sql)
-        connection.commit()
+    with connection.cursor() as cursor:
+        sql = "DROP TABLE IF EXISTS `Modules`;"
+        sql += "CREATE TABLE `Modules` ( \
+            id INT NOT NULL AUTO_INCREMENT,\
+            name TEXT,\
+            block_id TEXT,\
+            update_time TIMESTAMP,\
+            PRIMARY KEY (id)\
+        );"
+        cursor.execute(sql)
+    connection.commit()
 
 def fillTable(list):
     flagFirst = 1
-    try:
-        with connection.cursor() as cursor:
-            sql = "INSERT INTO `users` (`name`, `block_id`) VALUES "
+    with connection.cursor() as cursor:
+        sql = "INSERT INTO `users` (`name`, `block_id`) VALUES "
 
-            for block in outputList:
-                if flagFirst == 1:
-                    flagFirst = 0
-                else:
-                    sql += ", "
-                sql += '(' + block['display_name'] + ',' + block['block_id'] + ')'
-            cursor.execute(sql)
-        connection.commit()
+        for block in outputList:
+            if flagFirst == 1:
+                flagFirst = 0
+            else:
+                sql += ", "
+            sql += '(' + block['display_name'] + ',' + block['block_id'] + ')'
+        cursor.execute(sql)
+    connection.commit()
         
-
 # createTable()
 # loadStructCourse()
 main()
