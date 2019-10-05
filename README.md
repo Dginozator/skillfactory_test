@@ -4,7 +4,7 @@ It's test with course structure parsing.
 
 ## Environment
 
-* ubuntu-18.04.3-live-server-amd64  
+* windows 7  
 * python 3.7.1, lib pymysql  
 * MariaDB 10.4.8 
 
