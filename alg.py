@@ -12,6 +12,12 @@ connection = pymysql.connect(
     charset='utf8mb4',
     cursorclass=pymysql.cursors.DictCursor)
 
+def main():
+    list = loadStructCourse()
+    createTable()
+    fillTable(list)
+
+
 def loadStructCourse():
     url = 'http://analytics.skillfactory.ru:5000/api/v1.0/get_structure_course/'
     r = requests.post(url, data = {})
@@ -42,6 +48,8 @@ def loadStructCourse():
 
     with open('struct.txt', 'w') as dfile:
         dfile.write(outputTxt)
+
+    return(outputList)
 
 def sortBlocks(blocksList):
     sortedList = []
@@ -130,25 +138,25 @@ def createTable():
     finally:
         connection.close()
 
-def example():
+def fillTable(list):
+    flagFirst = 1
     try:
         with connection.cursor() as cursor:
-            # Create a new record
-            sql = "INSERT INTO `users` (`email`, `password`) VALUES (%s, %s)"
-            cursor.execute(sql, ('webmaster@python.org', 'very-secret'))
+            sql = "INSERT INTO `users` (`name`, `block_id`) VALUES "
 
-        # connection is not autocommit by default. So you must commit to save
-        # your changes.
+            for block in outputList:
+                if flagFirst == 1:
+                    flagFirst = 0
+                else:
+                    sql += ", "
+                sql += '(' + block['display_name'] + ',' + block['block_id'] + ')'
+            cursor.execute(sql)
         connection.commit()
-
-        with connection.cursor() as cursor:
-            # Read a single record
-            sql = "SELECT `id`, `password` FROM `users` WHERE `email`=%s"
-            cursor.execute(sql, ('webmaster@python.org',))
-            result = cursor.fetchone()
-            print(result)
+    except:
+        pass
     finally:
         connection.close()
 
-createTable()
+# createTable()
 # loadStructCourse()
+main()
