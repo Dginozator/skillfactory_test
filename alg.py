@@ -14,9 +14,11 @@ connection = pymysql.connect(
 
 def main():
     list = loadStructCourse()
+
+    createTable()
+    fillTable(list)
     try:
-        createTable()
-        fillTable(list)
+        pass
     except:
         pass
     finally:
@@ -128,7 +130,8 @@ def parseIndex (index):
 def createTable():
     with connection.cursor() as cursor:
         sql = "DROP TABLE IF EXISTS `Modules`;"
-        sql += "CREATE TABLE `Modules` ( \
+        cursor.execute(sql)
+        sql = "CREATE TABLE `Modules` ( \
             id INT NOT NULL AUTO_INCREMENT,\
             name TEXT,\
             block_id TEXT,\
@@ -140,18 +143,23 @@ def createTable():
 
 def fillTable(list):
     flagFirst = 1
+    sql = ''
     with connection.cursor() as cursor:
-        sql = "INSERT INTO `users` (`name`, `block_id`) VALUES "
+        sql = 'INSERT INTO `Modules` (`name`, `block_id`) VALUES '
 
-        for block in outputList:
+        for block in list:
             if flagFirst == 1:
                 flagFirst = 0
             else:
-                sql += ", "
-            sql += '(' + block['display_name'] + ',' + block['block_id'] + ')'
-        cursor.execute(sql)
+                sql += ', '
+            sql += '("%s", "%s")' \
+            % (block['display_name'], block['block_id'])
+        print(sql)
+        cursor.execute(sql + ';')
     connection.commit()
         
 # createTable()
 # loadStructCourse()
 main()
+
+# fillTable([{'display_name': 'd1', 'block_id': 'b_id1'}, {'display_name': 'd2', 'block_id': 'b_id2'}])
