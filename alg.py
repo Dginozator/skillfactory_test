@@ -17,14 +17,8 @@ def main():
 
     createTable()
     fillTable(list)
-    try:
-        pass
-    except:
-        pass
-    finally:
-        connection.close()
-
-
+    connection.close()
+        
 def loadStructCourse():
     url = 'http://analytics.skillfactory.ru:5000/api/v1.0/get_structure_course/'
     r = requests.post(url, data = {})
@@ -154,7 +148,6 @@ def fillTable(list):
                 sql += ', '
             sql += '("%s", "%s")' \
             % (block['display_name'], block['block_id'])
-        print(sql)
         cursor.execute(sql + ';')
     connection.commit()
         
